@@ -1,5 +1,5 @@
 import React from 'react';
-import {access} from './constants';
+import { apiUrl } from './constants';
 
 class Auth extends React.Component {
   constructor(baseUrl) {
@@ -42,6 +42,6 @@ class Auth extends React.Component {
   }
 }
 
-const auth = new Auth(access.authUrl);
+const auth = new Auth(apiUrl);
 
 export default auth;

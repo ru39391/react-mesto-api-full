@@ -30,22 +30,6 @@ function App() {
   });
   const [Cards, setCardList] = React.useState([]);
 
-  React.useEffect(() => {
-    Promise.all([api.getUserData(), api.getInitialCards()])
-      .then(([userData, initialCards]) => {
-        setCurrentUser({
-          id: userData._id,
-          name: userData.name,
-          about: userData.about,
-          avatar: userData.avatar
-        });
-        setCardList(initialCards);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   /* popup handlers */
   const [IsEditProfilePopupOpen, setEditProfilePopupActive] = React.useState(false);
   function handleEditProfileClick() {
@@ -111,7 +95,7 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(item => item._id === CurrentUser.id);
+    const isLiked = card.likes.some(item => item === CurrentUser.id);
     api.changeLikeCardStatus({
       id: card._id,
       isLiked: !isLiked
@@ -198,7 +182,7 @@ function App() {
   function signIn(data) {
     auth.authUser(data, signinConfig)
       .then(res => {
-        //console.log(res);
+        console.log(res);
         if(res.token) {
           const { token } = res;
           localStorage.setItem('token', token);
@@ -224,11 +208,11 @@ function App() {
     if(jwt) {
       auth.getUserToken(jwt)
         .then(res => {
-          //console.log(res.data);
-          const {_id, email} = res.data;
+          //console.log(res);
+          const {_id, email} = res;
           handleUserData({
             id: _id,
-            email: email
+            email
           });
           handleLoggedIn();
           history.push('/');
@@ -241,6 +225,23 @@ function App() {
 
   React.useEffect(() => {
     checkToken();
+  }, [IsLoggedIn]);
+
+  React.useEffect(() => {
+    Promise.all([api.getUserData(), api.getInitialCards()])
+      .then(([userData, initialCards]) => {
+        const { _id, name, about, avatar } = userData;
+        setCurrentUser({
+          id: _id,
+          name,
+          about,
+          avatar
+        });
+        setCardList(initialCards);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, [IsLoggedIn]);
 
   return (

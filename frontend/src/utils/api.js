@@ -1,5 +1,5 @@
 import React from 'react';
-import {access} from './constants';
+import { apiUrl } from './constants';
 
 class Api extends React.Component {
   constructor({baseUrl, headers}) {
@@ -87,9 +87,9 @@ class Api extends React.Component {
 }
 
 const api = new Api({
-  baseUrl: access.baseUrl,
+  baseUrl: apiUrl,
   headers: {
-    authorization: access.token,
+    'Authorization': `Bearer ${localStorage.getItem('token')}`,
     'Content-Type': 'application/json'
   }
 });
