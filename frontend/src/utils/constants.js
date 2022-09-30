@@ -2,7 +2,8 @@ import iconError from '../images/icons/icon-error.svg';
 import iconSuccess from '../images/icons/icon-success.svg';
 
 export const access = {
-  authUrl: 'https://auth.nomoreparties.co',
+  //authUrl: 'https://api.ru39391.students.nomoredomains.icu/users',
+  authUrl: 'http://localhost:4000',
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-43',
   token: 'bee12215-09da-441f-9f38-f7f695bca43f',
 }

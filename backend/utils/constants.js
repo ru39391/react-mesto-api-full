@@ -33,9 +33,9 @@ const actionMessages = {
 
 const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
 const allowedCors = [
-  'https://ru39391.students.nomoredomains.icu/',
-  'http://ru39391.students.nomoredomains.icu/',
-  'localhost:3000'
+  'https://ru39391.students.nomoredomains.icu',
+  'http://ru39391.students.nomoredomains.icu',
+  'http://localhost:3000',
 ];
 
 // eslint-disable-next-line no-useless-escape

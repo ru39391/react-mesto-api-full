@@ -11,7 +11,7 @@ class Auth extends React.Component {
     if (result.ok) {
       return result.json();
     }
-
+    console.log(result);
     return Promise.reject(`${resultAlert}: ${result.status}`);
   }
 
@@ -21,6 +21,7 @@ class Auth extends React.Component {
       headers: {
         'Content-Type': 'application/json'
       },
+      //credentials: 'include',
       body: JSON.stringify({
         password: data.password,
         email: data.email
