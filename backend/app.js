@@ -5,7 +5,7 @@ const { celebrate, errors, Joi } = require('celebrate');
 const NotFoundError = require('./errors/not-found-err');
 const auth = require('./middlewares/auth');
 const { createUser, login } = require('./controllers/users');
-const { errMessageNotFound, patterUrl } = require('./utils/constants');
+const { actionMessages, errMessageNotFound, patterUrl } = require('./utils/constants');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -14,6 +14,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
+});
+
+app.use(require('./middlewares/corsHandler'));
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error(actionMessages.errorCrashTest);
+  }, 0);
 });
 
 app.post('/signin', celebrate({

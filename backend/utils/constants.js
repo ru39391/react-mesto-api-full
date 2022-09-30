@@ -28,13 +28,22 @@ const actionMessages = {
   errorLogin: 'Необходима авторизация',
   errorUser: 'Пользователь с таким e-mail уже существует',
   errorCardAccess: 'Невозможно удалить карточку: недостаточно прав для совершения операции',
+  errorCrashTest: 'Сервер сейчас упадёт',
 };
+
+const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
+const allowedCors = [
+  'https://ru39391.students.nomoredomains.icu/',
+  'http://ru39391.students.nomoredomains.icu/',
+  'localhost:3000'
+];
 
 // eslint-disable-next-line no-useless-escape
 const patterUrl = /^(https?:\/\/)([w\.]{4})?([a-z0-9\.\-]{3,})([a-z]+)([\Wa-z0-9]+)#?/;
 
 module.exports = {
   patterUrl,
+  allowedCors,
   actionMessages,
   errMessageNotFound,
   errMessageValidation,
@@ -44,4 +53,5 @@ module.exports = {
   NOT_FOUND_ERROR_CODE,
   CONFLICT_ERROR_CODE,
   BAD_REQUEST_ERROR_CODE,
+  DEFAULT_ALLOWED_METHODS,
 };
