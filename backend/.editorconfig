@@ -15,7 +15,7 @@ indent_size = 2
 
 # Line ending file format
 # Possible values - lf, crlf, cr
-end_of_line = crlf
+end_of_line = lf
 
 # File character encoding
 # Possible values - latin1, utf-8, utf-16be, utf-16le

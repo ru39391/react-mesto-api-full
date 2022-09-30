@@ -11,6 +11,14 @@ const errMessageNotFound = {
   request: 'Такого ресурса не существует',
 };
 
+const errMessageValidation = {
+  required: 'Это поле обязательно для заполнения',
+  min: 'Введено значение меньше минимально допустимого',
+  max: 'Введено значение больше максимально допустимого',
+  email: 'Указан некорректный e-mail',
+  url: 'Указана некорректная ссылка',
+};
+
 const actionMessages = {
   successCardRemoved: 'Карточка удалена',
   successAuth: 'Авторизация прошла успешно',
@@ -22,9 +30,14 @@ const actionMessages = {
   errorCardAccess: 'Невозможно удалить карточку: недостаточно прав для совершения операции',
 };
 
+// eslint-disable-next-line no-useless-escape
+const patterUrl = /^(https?:\/\/)([w\.]{4})?([a-z0-9\.\-]{3,})([a-z]+)([\Wa-z0-9]+)#?/;
+
 module.exports = {
+  patterUrl,
   actionMessages,
   errMessageNotFound,
+  errMessageValidation,
   VALIDATION_ERROR_CODE,
   AUTH_ERROR_CODE,
   ACCESS_ERROR_CODE,

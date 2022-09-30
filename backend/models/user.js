@@ -1,31 +1,35 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+const validator = require('validator');
 const AuthError = require('../errors/auth-err');
-const { actionMessages } = require('../utils/constants');
+const { actionMessages, errMessageValidation, patterUrl } = require('../utils/constants');
 
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: true,
+    required: [true, errMessageValidation.required],
     unique: true,
+    validate: {
+      validator: (value) => validator.isEmail(value),
+      message: errMessageValidation.email,
+    },
   },
   password: {
     type: String,
-    required: true,
+    required: [true, errMessageValidation.required],
     select: false,
-    minlength: 8,
   },
   name: {
     type: String,
-    minlength: 2,
-    maxlength: 30,
+    minlength: [2, errMessageValidation.min],
+    maxlength: [30, errMessageValidation.max],
     required: false,
     default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
-    minlength: 2,
-    maxlength: 30,
+    minlength: [2, errMessageValidation.min],
+    maxlength: [30, errMessageValidation.max],
     required: false,
     default: 'Исследователь',
   },
@@ -33,9 +37,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+    validate: {
+      validator: (value) => patterUrl.test(value),
+      message: errMessageValidation.url,
+    },
   },
 });
 
+// eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')
     .then((user) => {

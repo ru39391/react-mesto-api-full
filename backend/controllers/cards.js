@@ -29,10 +29,12 @@ module.exports.removeCard = (req, res, next) => {
   const { cardId } = req.params;
 
   Card.findById(cardId)
+    // eslint-disable-next-line consistent-return
     .then((card) => {
       if (!card) {
         return next(new NotFoundError(errMessageNotFound.card));
       }
+      // eslint-disable-next-line default-case
       switch (_id === JSON.stringify(card.owner).split('"')[1]) {
         case true:
           Card.findOneAndRemove({ owner: _id, id: cardId })
@@ -41,9 +43,9 @@ module.exports.removeCard = (req, res, next) => {
           break;
         case false:
           return next(new AccessError(actionMessages.errorCardAccess));
-          break;
       }
     })
+    // eslint-disable-next-line no-unused-vars
     .catch((err) => {
       if (err.name === 'CastError') {
         return next(new ValidationError(actionMessages.errorId));

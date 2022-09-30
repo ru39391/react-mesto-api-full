@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const validator = require('validator');
 const User = require('../models/user');
 const ValidationError = require('../errors/validation-err');
 const NotFoundError = require('../errors/not-found-err');
@@ -43,7 +42,18 @@ module.exports.createUser = (req, res, next) => {
       about,
       avatar,
     }))
-    .then((user) => res.send({ _id: user._id, email: user.email }))
+    .then((user) => {
+      const {
+        // eslint-disable-next-line no-shadow
+        email, name, about, avatar,
+      } = user;
+      return res.send({
+        email,
+        name,
+        about,
+        avatar,
+      });
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return next(new ValidationError(err.message));
@@ -89,7 +99,7 @@ module.exports.login = (req, res, next) => {
       const token = jwt.sign(
         { _id: user._id },
         'some-secret-key',
-        { expiresIn: '7d' }
+        { expiresIn: '7d' },
       );
       return res.send({ token });
     })
