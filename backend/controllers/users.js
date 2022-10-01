@@ -4,7 +4,11 @@ const User = require('../models/user');
 const ValidationError = require('../errors/validation-err');
 const NotFoundError = require('../errors/not-found-err');
 const ConflictError = require('../errors/conflict-err');
-const { actionMessages, errMessageNotFound } = require('../utils/constants');
+const {
+  NODE_ENV_DEFAULT, JWT_SECRET_DEFAULT, actionMessages, errMessageNotFound,
+} = require('../utils/constants');
+
+const { NODE_ENV = NODE_ENV_DEFAULT, JWT_SECRET } = process.env;
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -98,7 +102,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        'some-secret-key',
+        NODE_ENV === 'production' ? JWT_SECRET : JWT_SECRET_DEFAULT,
         { expiresIn: '7d' },
       );
       return res.send({ token });

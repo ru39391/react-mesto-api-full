@@ -5,6 +5,9 @@ const NOT_FOUND_ERROR_CODE = 404;
 const CONFLICT_ERROR_CODE = 409;
 const BAD_REQUEST_ERROR_CODE = 500;
 
+const NODE_ENV_DEFAULT = 'development';
+const JWT_SECRET_DEFAULT = 'dev-secret';
+
 const errMessageNotFound = {
   user: 'Пользователь не найден',
   card: 'Карточки с таким ID не существует',
@@ -47,6 +50,8 @@ module.exports = {
   actionMessages,
   errMessageNotFound,
   errMessageValidation,
+  NODE_ENV_DEFAULT,
+  JWT_SECRET_DEFAULT,
   VALIDATION_ERROR_CODE,
   AUTH_ERROR_CODE,
   ACCESS_ERROR_CODE,
