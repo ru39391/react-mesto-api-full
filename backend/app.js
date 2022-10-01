@@ -9,7 +9,7 @@ const { createUser, login } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { actionMessages, errMessageNotFound, patterUrl } = require('./utils/constants');
 
-const { PORT = 4000 } = process.env;
+const { PORT = 3000 } = process.env;
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
