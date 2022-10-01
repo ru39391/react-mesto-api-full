@@ -1,8 +1,7 @@
 import iconError from '../images/icons/icon-error.svg';
 import iconSuccess from '../images/icons/icon-success.svg';
 
-export const apiUrl = 'http://localhost:4000';
-//authUrl: 'https://api.ru39391.students.nomoredomains.icu/users',
+export const apiUrl = 'https://api.ru39391.students.nomoredomains.icu';
 
 export const signupConfig = {
   endPoint: 'signup',

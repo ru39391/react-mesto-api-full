@@ -24,7 +24,7 @@ function Auth({classMod, formName, title, btnCaption, isOpen, onHandleVisibility
       email: email
     });
   }
-  
+
   React.useEffect(() => {
     Object.keys(refs).forEach(refsItem => {
       refs[refsItem].current.value = '';

@@ -12,18 +12,18 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
   }
 
   function handleSubmit(e) {
-    e.preventDefault();  
+    e.preventDefault();
     onAddPlace({
       name: refs.name,
       link: refs.link
     });
   }
-  
+
   React.useEffect(() => {
     Object.keys(refs).forEach(refsItem => {
       refs[refsItem].current.value = '';
     });
-  }, [refs, isOpen]); 
+  }, [refs, isOpen]);
 
   return (
     <PopupWithForm title="Новое место" className="add-card" formName="addCard" btnCaption="Создать" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>

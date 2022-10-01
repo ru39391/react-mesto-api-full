@@ -1,5 +1,6 @@
 const { allowedCors, DEFAULT_ALLOWED_METHODS } = require('../utils/constants');
 
+// eslint-disable-next-line consistent-return
 const corsHandler = (req, res, next) => {
   const { method, headers } = req;
   const { origin } = headers;

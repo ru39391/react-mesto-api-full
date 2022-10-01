@@ -1,5 +1,5 @@
 {
-  "name": "express-mesto-gha",
+  "name": "react-mesto-api-full",
   "version": "1.0.0",
   "description": "Бэкенд простого веб-приложения (генерация списка юзеров): Node.js, Express, MongoDB",
   "main": "app.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ru39391/express-mesto-gha.git"
+    "url": "git+https://github.com/ru39391/react-mesto-api-full.git"
   },
   "keywords": [
     "node",
@@ -20,9 +20,9 @@
   "author": "tg: @vladimir_wd",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ru39391/express-mesto-gha/issues"
+    "url": "https://github.com/ru39391/react-mesto-api-full/issues"
   },
-  "homepage": "https://github.com/ru39391/express-mesto-gha#readme",
+  "homepage": "https://github.com/ru39391/react-mesto-api-full#readme",
   "devDependencies": {
     "eslint": "^8.23.1",
     "eslint-config-airbnb-base": "^15.0.0",

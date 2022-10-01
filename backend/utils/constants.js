@@ -38,6 +38,7 @@ const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
 const allowedCors = [
   'https://ru39391.students.nomoredomains.icu',
   'http://ru39391.students.nomoredomains.icu',
+  'http://51.250.12.114',
   'http://localhost:3000',
 ];
 

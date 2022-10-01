@@ -57,8 +57,8 @@ function App() {
     setEditAvatarPopupActive(false);
     setAddPlacePopupActive(false);
     setSelectedCard(null);
-  }  
-  
+  }
+
   /* user handlers */
   function handleUpdateUser(data) {
     api.setUserData(data, Jwt)
@@ -87,7 +87,7 @@ function App() {
   function handleAddPlaceSubmit(data) {
     api.addCard(data, Jwt)
       .then(res => {
-        setCardList([res, ...Cards]); 
+        setCardList([res, ...Cards]);
         closeAllPopups();
       })
       .catch((err) => {
