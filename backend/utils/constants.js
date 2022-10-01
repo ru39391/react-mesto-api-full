@@ -34,7 +34,7 @@ const actionMessages = {
   errorCrashTest: 'Сервер сейчас упадёт',
 };
 
-const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
+const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 const allowedCors = [
   'https://ru39391.students.nomoredomains.icu',
   'http://ru39391.students.nomoredomains.icu',
