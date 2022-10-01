@@ -5,6 +5,7 @@ const { celebrate, errors, Joi } = require('celebrate');
 const NotFoundError = require('./errors/not-found-err');
 const auth = require('./middlewares/auth');
 const { createUser, login } = require('./controllers/users');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { actionMessages, errMessageNotFound, patterUrl } = require('./utils/constants');
 
 const { PORT = 4000 } = process.env;
@@ -18,6 +19,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 app.use(require('./middlewares/corsHandler'));
 
+app.use(requestLogger);
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error(actionMessages.errorCrashTest);
@@ -45,6 +47,7 @@ app.use('/cards', auth, require('./routes/cards'));
 
 app.use('*', (req, res, next) => next(new NotFoundError(errMessageNotFound.request)));
 
+app.use(errorLogger);
 app.use(errors());
 app.use(require('./middlewares/errorHandler'));
 
