@@ -37,7 +37,7 @@ module.exports.removeCard = (req, res, next) => {
       // eslint-disable-next-line default-case
       switch (_id === JSON.stringify(card.owner).split('"')[1]) {
         case true:
-          Card.findOneAndRemove({ owner: _id, id: cardId })
+          Card.findOneAndRemove({ owner: _id, _id: cardId })
             .then(() => res.send({ message: actionMessages.successCardRemoved }))
             .catch((err) => next(err));
           break;
