@@ -2,10 +2,9 @@ import React from 'react';
 import { apiUrl } from './constants';
 
 class Api extends React.Component {
-  constructor({baseUrl, headers}) {
+  constructor(baseUrl) {
     super();
     this._baseUrl = baseUrl;
-    this._headers = headers;
   }
 
   _checkResponse(result, resultAlert) {
@@ -16,17 +15,25 @@ class Api extends React.Component {
     return Promise.reject(`${resultAlert}: ${result.status}`);
   }
 
-  getInitialCards() {
+  _setHeaders(jwt) {
+    return {
+      'Authorization' : `Bearer ${jwt}`,
+      'Content-Type': 'application/json'
+    };
+  }
+
+  getInitialCards(jwt) {
     return fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers
+      method: 'GET',
+      headers: this._setHeaders(jwt)
     })
       .then((res) => {return this._checkResponse(res, 'Ошибка при загрузке карточек')});
   }
 
-  addCard(data) {
+  addCard(data, jwt) {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
-      headers: this._headers,
+      headers: this._setHeaders(jwt),
       body: JSON.stringify({
         name: data.name,
         link: data.link
@@ -35,37 +42,38 @@ class Api extends React.Component {
       .then(res => this._checkResponse(res, 'Ошибка при добавление новой карточки'));
   }
 
-  removeCard(data) {
+  removeCard(data, jwt) {
     return fetch(`${this._baseUrl}/cards/${data.id}`, {
       method: 'DELETE',
-      headers: this._headers
+      headers: this._setHeaders(jwt),
     })
       .then(res => this._checkResponse(res, 'Ошибка при удалении карточки'));
   }
 
-  changeLikeCardStatus(data) {
+  changeLikeCardStatus(data, jwt) {
     const config = {
       method: data.isLiked ? 'PUT' : 'DELETE',
       alert: data.isLiked ? 'Ошибка при добавлении в избранное' : 'Ошибка при удалении из избранного',
     }
     return fetch(`${this._baseUrl}/cards/${data.id}/likes`, {
       method: config.method,
-      headers: this._headers
+      headers: this._setHeaders(jwt),
     })
       .then(res => this._checkResponse(res, config.alert));
   }
 
-  getUserData() {
+  getUserData(jwt) {
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers
+      method: 'GET',
+      headers: this._setHeaders(jwt)
     })
       .then(res => this._checkResponse(res, 'Ошибка при получении данных пользователя'));
   }
 
-  setUserData(data) {
+  setUserData(data, jwt) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: this._setHeaders(jwt),
       body: JSON.stringify({
         name: data.name,
         about: data.about
@@ -74,10 +82,10 @@ class Api extends React.Component {
       .then(res => this._checkResponse(res, 'Ошибка при обновлении данных пользователя'));
   }
 
-  setUserPic(data) {
+  setUserPic(data, jwt) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: this._setHeaders(jwt),
       body: JSON.stringify({
         avatar: data.avatar
       })
@@ -86,12 +94,6 @@ class Api extends React.Component {
   }
 }
 
-const api = new Api({
-  baseUrl: apiUrl,
-  headers: {
-    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    'Content-Type': 'application/json'
-  }
-});
+const api = new Api(apiUrl);
 
 export default api;

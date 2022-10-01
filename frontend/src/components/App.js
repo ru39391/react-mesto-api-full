@@ -13,7 +13,7 @@ import ProtectedRoute from './ProtectedRoute';
 
 import api from "../utils/api";
 import auth from "../utils/auth";
-import {tooltipConfig, signupConfig, signinConfig} from '../utils/constants';
+import { tooltipConfig, signupConfig, signinConfig } from '../utils/constants';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import TooltipContext from '../contexts/TooltipContext';
 import profileAvatar from '../images/profile/profile__avatar.png';
@@ -29,6 +29,7 @@ function App() {
     avatar: profileAvatar
   });
   const [Cards, setCardList] = React.useState([]);
+  const [Jwt, setJwt] = React.useState(null);
 
   /* popup handlers */
   const [IsEditProfilePopupOpen, setEditProfilePopupActive] = React.useState(false);
@@ -60,7 +61,7 @@ function App() {
   
   /* user handlers */
   function handleUpdateUser(data) {
-    api.setUserData(data)
+    api.setUserData(data, Jwt)
       .then(res => {
         CurrentUser.name = res.name;
         CurrentUser.about = res.about;
@@ -72,7 +73,7 @@ function App() {
   }
 
   function handleUpdateAvatar(data) {
-    api.setUserPic(data)
+    api.setUserPic(data, Jwt)
       .then(res => {
         CurrentUser.avatar = res.avatar;
         closeAllPopups();
@@ -84,7 +85,7 @@ function App() {
 
   /* card handlers */
   function handleAddPlaceSubmit(data) {
-    api.addCard(data)
+    api.addCard(data, Jwt)
       .then(res => {
         setCardList([res, ...Cards]); 
         closeAllPopups();
@@ -99,7 +100,7 @@ function App() {
     api.changeLikeCardStatus({
       id: card._id,
       isLiked: !isLiked
-    })
+    }, Jwt)
       .then(res => {
         setCardList(state => state.map(item => item._id === card._id ? res : item));
       })
@@ -111,7 +112,7 @@ function App() {
   function handleCardDelete(card) {
     api.removeCard({
       id: card._id
-    })
+    }, Jwt)
       .then(res => {
         setCardList(state => state.filter(item => item._id !== card._id));
       })
@@ -156,8 +157,9 @@ function App() {
 
   /* logged status params */
   const [IsLoggedIn, setLoggedIn] = React.useState(false);
-  function handleLoggedIn() {
-    setLoggedIn(true);
+  function handleLoggedIn(currState, jwt) {
+    setLoggedIn(currState);
+    setJwt(jwt);
   };
 
   const [UserData, setUserData] = React.useState({});
@@ -182,11 +184,11 @@ function App() {
   function signIn(data) {
     auth.authUser(data, signinConfig)
       .then(res => {
-        console.log(res);
+        //console.log(res);
         if(res.token) {
           const { token } = res;
           localStorage.setItem('token', token);
-          handleLoggedIn();
+          handleLoggedIn(true, localStorage.getItem('token'));
           history.push('/');
         }
       })
@@ -199,6 +201,7 @@ function App() {
 
   function signOut(){
     localStorage.removeItem('token');
+    handleLoggedIn(false, null);
     history.push('/sign-in');
   }
 
@@ -212,9 +215,9 @@ function App() {
           const {_id, email} = res;
           handleUserData({
             id: _id,
-            email
+            email: email
           });
-          handleLoggedIn();
+          handleLoggedIn(true, jwt);
           history.push('/');
         })
         .catch(err => {
@@ -225,17 +228,14 @@ function App() {
 
   React.useEffect(() => {
     checkToken();
-  }, [IsLoggedIn]);
-
-  React.useEffect(() => {
-    Promise.all([api.getUserData(), api.getInitialCards()])
+    Promise.all([api.getUserData(Jwt), api.getInitialCards(Jwt)])
       .then(([userData, initialCards]) => {
         const { _id, name, about, avatar } = userData;
         setCurrentUser({
           id: _id,
           name,
           about,
-          avatar
+          avatar,
         });
         setCardList(initialCards);
       })

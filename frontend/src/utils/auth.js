@@ -11,17 +11,23 @@ class Auth extends React.Component {
     if (result.ok) {
       return result.json();
     }
-    console.log(result);
     return Promise.reject(`${resultAlert}: ${result.status}`);
+  }
+
+  _setHeaders(jwt = null) {
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    if(jwt) {
+      headers.Authorization = `Bearer ${jwt}`;
+    };
+    return headers;
   }
 
   authUser(data, config) {
     return fetch(`${this._baseUrl}/${config.endPoint}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      //credentials: 'include',
+      headers: this._setHeaders(),
       body: JSON.stringify({
         password: data.password,
         email: data.email
@@ -33,10 +39,7 @@ class Auth extends React.Component {
   getUserToken(jwt) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization' : `Bearer ${jwt}`
-      }
+      headers: this._setHeaders(jwt),
     })
       .then(res => this._checkResponse(res, 'Ошибка при получении JSON Web Token'));
   }
