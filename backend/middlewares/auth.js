@@ -10,7 +10,8 @@ module.exports = (req, res, next) => {
   const secretKey = NODE_ENV === 'production' ? JWT_SECRET : JWT_SECRET_DEFAULT;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return next(new AuthError(actionMessages.errorLogin));
+    next(new AuthError(actionMessages.errorLogin));
+    return;
   }
 
   const token = authorization.replace('Bearer ', '');
@@ -19,6 +20,7 @@ module.exports = (req, res, next) => {
   try {
     payload = jwt.verify(token, secretKey);
   } catch (err) {
+    // eslint-disable-next-line consistent-return
     return next(new AuthError(actionMessages.errorLogin));
   }
 
